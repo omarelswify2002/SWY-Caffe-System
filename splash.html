@@ -1,0 +1,460 @@
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="vendor/image/logo.png" type="image/png">
+    <title>SWY Coffee - قهوة SWY</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #2c1a1a 0%, #1a0f0f 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* خلفية متحركة من حبات القهوة */
+        .coffee-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .coffee-bean {
+            position: absolute;
+            background: radial-gradient(circle at 30% 30%, #8B4513, #5D4037);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        .coffee-bean:nth-child(1) {
+            width: 80px;
+            height: 40px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .coffee-bean:nth-child(2) {
+            width: 60px;
+            height: 30px;
+            top: 20%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .coffee-bean:nth-child(3) {
+            width: 70px;
+            height: 35px;
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        .coffee-bean:nth-child(4) {
+            width: 50px;
+            height: 25px;
+            bottom: 15%;
+            right: 25%;
+            animation-delay: 6s;
+        }
+
+        .coffee-bean:nth-child(5) {
+            width: 90px;
+            height: 45px;
+            top: 40%;
+            right: 10%;
+            animation-delay: 8s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-20px) rotate(90deg);
+            }
+            50% {
+                transform: translateY(0) rotate(180deg);
+            }
+            75% {
+                transform: translateY(20px) rotate(270deg);
+            }
+        }
+
+        /* الحاوية الرئيسية */
+        .splash-container {
+            /* text-align: center; */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            position: relative;
+            animation: fadeIn 1.5s ease-out;
+            padding-bottom: 50px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* الشعار */
+        .logo-container {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .logo-outer {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #c79b63 0%, #8B4513 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(199, 155, 99, 0.3);
+            animation: pulse 2s infinite alternate;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-outer::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="none" stroke="%23ffffff" stroke-width="2" stroke-opacity="0.1"/></svg>');
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 10px 30px rgba(199, 155, 99, 0.3); }
+            100% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(199, 155, 99, 0.5); }
+        }
+
+        .logo-inner {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #1a0f0f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-img {
+            width: 80px;
+            /* filter: brightness(0) invert(1); */
+            animation: rotate 10s infinite linear;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* النص */
+        .brand-name {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #c79b63 0%, #e0b878 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 5px 15px rgba(199, 155, 99, 0.3);
+            letter-spacing: 2px;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: #c79b63;
+            margin-bottom: 40px;
+            opacity: 0.8;
+            font-style: italic;
+            animation: fadeInOut 3s infinite alternate;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* شريط التحميل */
+        .progress-container {
+            width: 300px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 30px auto;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #c79b63, #8B4513);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            animation: loading 3s ease-in-out forwards;
+            box-shadow: 0 0 10px rgba(199, 155, 99, 0.5);
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            20% { width: 25%; }
+            40% { width: 50%; }
+            60% { width: 75%; }
+            80% { width: 90%; }
+            100% { width: 100%; }
+        }
+
+        /* مؤشر التحميل */
+        .loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .coffee-cup {
+            width: 40px;
+            height: 30px;
+            border: 3px solid #c79b63;
+            border-radius: 0 0 20px 20px;
+            position: relative;
+            margin: 0 10px;
+            animation: steam 2s infinite;
+        }
+
+        .coffee-cup::before {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border: 3px solid #c79b63;
+            border-radius: 50%;
+            top: -15px;
+            left: 5px;
+        }
+
+        .coffee-cup::after {
+            content: '';
+            position: absolute;
+            width: 5px;
+            height: 10px;
+            background: #c79b63;
+            top: -25px;
+            left: 10px;
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: steamRise 2s infinite;
+        }
+
+        @keyframes steam {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes steamRise {
+            0% { transform: translateY(0) scale(1); opacity: 0.7; }
+            100% { transform: translateY(-20px) scale(1.5); opacity: 0; }
+        }
+
+        .loading-text {
+            font-size: 1rem;
+            color: #c79b63;
+            margin-top: 20px;
+            animation: typing 3s steps(40, end), blink 0.75s step-end infinite;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid #c79b63;
+            width: 0;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 240px; }
+        }
+
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: #c79b63; }
+        }
+
+        /* رسالة الترحيب */
+        .welcome-message {
+            position: absolute;
+            bottom: 30px;
+            text-align: center;
+            width: 100%;
+            opacity: 0;
+            animation: showMessage 0.5s ease-out 2.5s forwards;
+        }
+
+        @keyframes showMessage {
+            to { opacity: 1; }
+        }
+
+        .welcome-text {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+        }
+
+        .opening-hours {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* تأثيرات إضافية */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #c79b63;
+            border-radius: 50%;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        /* تصميم متجاوب */
+        @media (max-width: 768px) {
+            .brand-name {
+                font-size: 2.5rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            .progress-container {
+                width: 250px;
+            }
+            
+            .logo-outer {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .logo-inner {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .logo-img {
+                width: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- خلفية حبات القهوة المتحركة -->
+    <div class="coffee-background">
+        <div class="coffee-bean"></div>
+        <div class="coffee-bean"></div>
+        <div class="coffee-bean"></div>
+        <div class="coffee-bean"></div>
+        <div class="coffee-bean"></div>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="splash-container">
+        <!-- الشعار -->
+        <div class="logo-container">
+            <div class="logo-outer">
+                <div class="logo-inner">
+                    <!-- <img src="vendor/image/logo.png" alt="SWY Coffee Logo" class="logo-img"> -->
+                    <img src="vendor/image/coffee-cup-isolated.png" alt="SWY Coffee Logo" class="logo-img">
+                </div>
+            </div>
+        </div>
+
+        <!-- النص -->
+        <h1 class="brand-name">SWY COFFEE</h1>
+        <p class="tagline">تجربة قهوة استثنائية في كل كوب</p>
+
+        <!-- شريط التحميل -->
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- مؤشر التحميل -->
+        <div class="loader">
+            <div class="coffee-cup"></div>
+        </div>
+
+        <!-- نص التحميل المتحرك -->
+        <div class="loading-text">جاري تحميل تجربة القهوة المثالية...</div>
+    </div>
+
+    <!-- رسالة الترحيب -->
+    <div class="welcome-message">
+        <p class="welcome-text">مرحباً بكم في SWY Coffee</p>
+        <p class="opening-hours">مفتوح يومياً من ٧ صباحاً حتى ١٢ منتصف الليل</p>
+    </div>
+
+    <!-- تأثيرات براقة -->
+    <div class="sparkle" style="top: 20%; left: 15%; animation-delay: 0.5s;"></div>
+    <div class="sparkle" style="top: 60%; right: 20%; animation-delay: 1s;"></div>
+    <div class="sparkle" style="bottom: 30%; left: 25%; animation-delay: 1.5s;"></div>
+
+    <script>
+        // إعادة توجيه بعد انتهاء التحميل
+        setTimeout(function() {
+            window.location.href = "main.html"; // استبدل main.html بصفحتك الرئيسية
+        }, 4000); // 4 ثواني
+
+        // إضافة تأثيرات تفاعلية إضافية
+        document.addEventListener('mousemove', function(e) {
+            const sparkles = document.querySelectorAll('.sparkle');
+            sparkles.forEach(sparkle => {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                sparkle.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
+            });
+        });
+
+        // تحديث شريط التقدم بشكل أكثر سلاسة
+        const progressBar = document.querySelector('.progress-bar');
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 1;
+            progressBar.style.width = progress + '%';
+            
+            if (progress >= 100) {
+                clearInterval(interval);
+            }
+        }, 30);
+    </script>
+</body>
+</html>

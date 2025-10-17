@@ -1,0 +1,16 @@
+# Node modules
+node_modules/
+dist/
+out/
+build/
+
+# Electron
+*.exe
+*.dll
+*.app
+*.dmg
+
+# Logs and temp files
+*.log
+.DS_Store
+Thumbs.db

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="vendor/image/logo.png" type="image/png">
+    <title>SWY Coffee - لوحة الإدارة</title>
+    <link rel="stylesheet" href="vendor/bootstrap-5.3.8-dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="vendor/fontawesome-free-7.1.0-web/css/all.min.css">
+    <script src="vendor/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin-style.css">
+    <script src="node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="logo">
+                <i class="fas fa-mug-hot"></i>
+            </div>
+            <h1 class="brand-name">SWY - لوحة الإدارة</h1>
+            <div class="header-actions">
+                <button type="button" class="refresh-btn" id="manualRefreshBtn" title="تحديث البيانات">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <div class="auto-refresh-indicator" id="autoRefreshIndicator">
+                    <i class="fas fa-circle"></i>
+                    <span>تحديث تلقائي</span>
+                </div>
+                <a href="index.html" class="back-to-menu-btn">
+                    <i class="fas fa-arrow-left"></i> العودة للقائمة
+                </a>
+            </div>
+        </header>
+        
+        <!-- Navigation Tabs -->
+        <nav class="admin-nav">
+            <button type="button" class="admin-tab-btn active" data-tab="add-products">
+                <i class="fas fa-plus-circle"></i> إضافة المنتجات
+            </button>
+            <button type="button" class="admin-tab-btn" data-tab="manage-orders">
+                <i class="fas fa-list-alt"></i> إدارة الطلبات
+            </button>
+            <button type="button" class="admin-tab-btn" data-tab="manage-offers">
+                <i class="fas fa-tags"></i> إدارة العروض
+            </button>
+        </nav>
+        
+        <!-- Add Products Section -->
+        <section class="admin-section active" id="add-products">
+            <div class="section-header">
+                <h2><i class="fas fa-plus-circle me-2"></i>إضافة منتج جديد</h2>
+            </div>
+            
+            <div class="add-product-form">
+                <form id="productForm">
+                    <div class="form-group">
+                        <label for="productCategory">نوع المنتج</label>
+                        <select id="productCategory" name="category" required>
+                            <option value="">اختر نوع المنتج</option>
+                            <option value="hot-drinks">المشروبات الساخنة</option>
+                            <option value="cold-drinks">المشروبات الباردة</option>
+                            <option value="ice-cream">الآيس كريم</option>
+                            <option value="milkshake">الميلك شيك</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productName">اسم المنتج</label>
+                        <input type="text" id="productName" name="name" placeholder="أدخل اسم المنتج" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productDescription">وصف المنتج</label>
+                        <input type="text" id="productDescription" name="description" placeholder="أدخل وصف المنتج" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productPrice">السعر (جنية)</label>
+                        <input type="number" id="productPrice" name="price" placeholder="أدخل السعر" min="1" step="0.5" required>
+                    </div>
+                    
+                    <button type="submit" class="add-product-btn">
+                        <i class="fas fa-plus"></i> إضافة المنتج
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Current Products Display -->
+            <div class="current-products">
+                <h3>المنتجات الحالية</h3>
+                <div class="products-grid" id="currentProductsGrid">
+                    <!-- Products will be displayed here -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Manage Orders Section -->
+        <section class="admin-section" id="manage-orders">
+            <div class="section-header">
+                <h2><i class="fas fa-list-alt me-2"></i>إدارة الطلبات</h2>
+                <div class="orders-summary">
+                    <div class="summary-item">
+                        <span class="summary-label">إجمالي الطلبات:</span>
+                        <span class="summary-value" id="totalOrdersCount">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">الطلبات المكتملة:</span>
+                        <span class="summary-value completed" id="completedOrdersCount">0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="orders-container" id="ordersContainer">
+                <!-- Orders will be displayed here -->
+            </div>
+            
+            <!-- Total Price and Actions -->
+            <div class="orders-footer">
+                <div class="total-price-section">
+                    <div class="total-price">
+                        <span class="total-label">إجمالي المبيعات:</span>
+                        <span class="total-amount" id="totalSalesAmount">0 جنية</span>
+                    </div>
+                </div>
+                <div class="footer-actions">
+                    <button type="button" class="delete-all-btn" id="deleteAllOrdersBtn">
+                        <i class="fas fa-trash-alt"></i> حذف جميع الطلبات
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Manage Offers Section -->
+        <section class="admin-section" id="manage-offers">
+            <div class="section-header">
+                <h2><i class="fas fa-tags me-2"></i>إدارة العروض</h2>
+            </div>
+
+            <div class="add-offer-form">
+                <form id="offerForm">
+                    <div class="form-group">
+                        <label for="offerTitle">عنوان العرض</label>
+                        <input type="text" id="offerTitle" name="title" placeholder="أدخل عنوان العرض" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="offerDescription">وصف العرض</label>
+                        <textarea id="offerDescription" name="description" placeholder="أدخل وصف العرض" rows="3" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="offerDiscount">نسبة الخصم (%)</label>
+                        <input type="number" id="offerDiscount" name="discount" placeholder="أدخل نسبة الخصم" min="1" max="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="offerValidUntil">صالح حتى</label>
+                        <input type="date" id="offerValidUntil" name="validUntil" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="offerActive">حالة العرض</label>
+                        <select id="offerActive" name="active" required>
+                            <option value="true">نشط</option>
+                            <option value="false">غير نشط</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="add-offer-btn">
+                        <i class="fas fa-plus"></i> إضافة العرض
+                    </button>
+                </form>
+            </div>
+
+            <!-- Current Offers Display -->
+            <div class="current-offers">
+                <h3>العروض الحالية</h3>
+                <div class="offers-grid" id="currentOffersGrid">
+                    <!-- Offers will be displayed here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

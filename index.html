@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="vendor/image/logo.png" type="image/png">
+    <title>SWY Coffee - قهوة SWY</title>
+    <link rel="stylesheet" href="vendor/bootstrap-5.3.8-dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="vendor/fontawesome-free-7.1.0-web/css/all.min.css">
+    <script src="vendor/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css">
+</head>
+<body>
+    <div class="coffee-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-mug-hot"></i>
+            </div>
+            <h1 class="brand-name">SWY</h1>
+            <p class="tagline">تجربة قهوة استثنائية في كل كوب</p>
+            <div class="header-actions">
+                <button type="button" class="admin-link" onclick="promptAdminPassword()">
+                    <i class="fas fa-cog"></i> لوحة الإدارة
+                </button>
+            </div>
+        </header>
+        
+        <!-- Special Offers -->
+        <div class="offers-section" id="offersSection">
+            <!-- Dynamic offers will be loaded here -->
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="category-nav">
+            <button class="category-btn active" data-category="hot-drinks">
+                <i class="fas fa-fire"></i> المشروبات الساخنة
+            </button>
+            <button class="category-btn" data-category="cold-drinks">
+                <i class="fas fa-snowflake"></i> المشروبات الباردة
+            </button>
+            <button class="category-btn" data-category="ice-cream">
+                <i class="fas fa-ice-cream"></i> الآيس كريم
+            </button>
+            <button class="category-btn" data-category="milkshake">
+                <i class="fas fa-blender"></i> الميلك شيك
+            </button>
+        </nav>
+        
+        <!-- Hot Drinks Menu -->
+        <section class="menu-section hot-drinks active" id="hot-drinks">
+            <div class="section-title">
+                <h2><i class="fas fa-fire me-2"></i>المشروبات الساخنة</h2>
+            </div>
+            
+            <div class="menu-grid">
+                <!-- Item 1 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-mug-hot"></i>
+                        <div class="item-badge">الأكثر طلباً</div>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>إسبريسو</span>
+                            <span class="item-price">18 جنية</span>
+                        </div>
+                        <p class="item-description">قهوة مركزة ذات نكهة قوية ورائحة زكية، مثالية لمحبي القهوة الأصيلة</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="إسبريسو" data-price="18" data-category="hot-drinks">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Item 2 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-coffee"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>لاتيه</span>
+                            <span class="item-price">22 جنية</span>
+                        </div>
+                        <p class="item-description">مزيج متناغم من الإسبريسو والحليب المبخر، بتصميم فني على السطح</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="لاتيه" data-price="22" data-category="hot-drinks">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Item 3 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-mug-hot"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>كابتشينو</span>
+                            <span class="item-price">20 جنية</span>
+                        </div>
+                        <p class="item-description">نسبة مثالية من القهوة والحليب ورغوة الحليب، كلاسيكي بلمسة عصرية</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="كابتشينو" data-price="20" data-category="hot-drinks">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-mug-hot"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>موكا</span>
+                            <span class="item-price">25 جنية</span>
+                        </div>
+                        <p class="item-description">مزيج رائع من الشوكولاتة والقهوة، لمحبي النكهات الحلوة</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="موكا" data-price="25" data-category="hot-drinks">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-mug-hot"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>شاي أخضر</span>
+                            <span class="item-price">15 جنية</span>
+                        </div>
+                        <p class="item-description">شاي أخضر عالي الجودة، منعش ومفيد للصحة</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="شاي أخضر" data-price="15" data-category="hot-drinks">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 6 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-mug-hot"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>هوت شوكلت</span>
+                            <span class="item-price">23 جنية</span>
+                        </div>
+                        <p class="item-description">شوكولاتة ساخنة غنية وكريمية، تمنحك الدفء والاسترخاء</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="هوت شوكلت" data-price="23" data-category="hot-drinks">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Cold Drinks Menu -->
+        <section class="menu-section cold-drinks" id="cold-drinks">
+            <div class="section-title">
+                <h2><i class="fas fa-snowflake me-2"></i>المشروبات الباردة</h2>
+            </div>
+            
+            <div class="menu-grid">
+                <!-- Item 1 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-glass-whiskey"></i>
+                        <div class="item-badge">جديد</div>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>آيسد لاتيه</span>
+                            <span class="item-price">24 جنية</span>
+                        </div>
+                        <p class="item-description">لاتيه بارد منعش، مثالي لأجواء الصيف الحارة</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="آيسد لاتيه" data-price="24" data-category="cold-drinks">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-glass-whiskey"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>آيسد أمريكانو</span>
+                            <span class="item-price">20 جنية</span>
+                        </div>
+                        <p class="item-description">أمريكانو بارد مع مكعبات ثلج، منعش وقوي</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="آيسد أمريكانو" data-price="20" data-category="cold-drinks">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-glass-whiskey"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>فرابيه</span>
+                            <span class="item-price">26 جنية</span>
+                        </div>
+                        <p class="item-description">مشروب قهوة مثلج مخفوق، بنكهات متنوعة</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="فرابيه" data-price="26" data-category="cold-drinks">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Item 4 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-glass-whiskey"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>عصير برتقال طازج</span>
+                            <span class="item-price">18 جنية</span>
+                        </div>
+                        <p class="item-description">عصير برتقال طازج معلب أمامك، غني بفيتامين C</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="عصير برتقال طازج" data-price="18" data-category="cold-drinks">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-glass-whiskey"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>ليموناضة</span>
+                            <span class="item-price">16 جنية</span>
+                        </div>
+                        <p class="item-description">ليموناضة منعشة محضرة من الليمون الطازج</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="ليموناضة" data-price="16" data-category="cold-drinks">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 6 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-glass-whiskey"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>آيسد موكا</span>
+                            <span class="item-price">28 جنية</span>
+                        </div>
+                        <p class="item-description">موكا مثلج مع رشة من الكاكاو والكريمة</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="آيسد موكا" data-price="28" data-category="cold-drinks">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Ice Cream Menu -->
+        <section class="menu-section ice-cream" id="ice-cream">
+            <div class="section-title">
+                <h2><i class="fas fa-ice-cream me-2"></i>الآيس كريم</h2>
+            </div>
+            
+            <div class="menu-grid">
+                <!-- Item 1 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-ice-cream"></i>
+                        <div class="item-badge">الأكثر طلباً</div>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>فانيليا</span>
+                            <span class="item-price">15 جنية</span>
+                        </div>
+                        <p class="item-description">آيس كريم فانيليا كريمي بنكهة الفانيليا الطبيعية</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="فانيليا" data-price="15" data-category="ice-cream">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-ice-cream"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>شوكولاتة</span>
+                            <span class="item-price">15 جنية</span>
+                        </div>
+                        <p class="item-description">آيس كريم شوكولاتة غني بنسبة عالية من الكاكاو</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="شوكولاتة" data-price="15" data-category="ice-cream">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-ice-cream"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>فراولة</span>
+                            <span class="item-price">15 جنية</span>
+                        </div>
+                        <p class="item-description">آيس كريم فراولة مع قطع فراولة حقيقية</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="فراولة" data-price="15" data-category="ice-cream">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Item 4 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-ice-cream"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>مكسيكانو</span>
+                            <span class="item-price">18 جنية</span>
+                        </div>
+                        <p class="item-description">مزيج من الشوكولاتة والفانيليا والفراولة</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="مكسيكانو" data-price="18" data-category="ice-cream">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-ice-cream"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>أوريو</span>
+                            <span class="item-price">17 جنية</span>
+                        </div>
+                        <p class="item-description">آيس كريم فانيليا مع قطع بسكويت أوريو</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="أوريو" data-price="17" data-category="ice-cream">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 6 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-ice-cream"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>مانجو</span>
+                            <span class="item-price">16 جنية</span>
+                        </div>
+                        <p class="item-description">آيس كريم مانجو منعش بنكهة المانجو الاستوائية</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="مانجو" data-price="16" data-category="ice-cream">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Milkshake Menu -->
+        <section class="menu-section milkshake" id="milkshake">
+            <div class="section-title">
+                <h2><i class="fas fa-blender me-2"></i>الميلك شيك</h2>
+            </div>
+            
+            <div class="menu-grid">
+                <!-- Item 1 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-blender"></i>
+                        <div class="item-badge">جديد</div>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>ميلك شيك شوكولاتة</span>
+                            <span class="item-price">22 جنية</span>
+                        </div>
+                        <p class="item-description">ميلك شيك شوكولاتة كريمي مع رشة من الشوكولاتة</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="ميلك شيك شوكولاتة" data-price="22" data-category="milkshake">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-blender"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>ميلك شيك فراولة</span>
+                            <span class="item-price">22 جنية</span>
+                        </div>
+                        <p class="item-description">ميلك شيك فراولة منعش مع قطع فراولة طازجة</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="ميلك شيك فراولة" data-price="22" data-category="milkshake">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Item 3 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-blender"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>ميلك شيك فانيليا</span>
+                            <span class="item-price">20 جنية</span>
+                        </div>
+                        <p class="item-description">ميلك شيك فانيليا ناعم وكريمي</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="ميلك شيك فانيليا" data-price="20" data-category="milkshake">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-blender"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>ميلك شيك أوريو</span>
+                            <span class="item-price">25 جنية</span>
+                        </div>
+                        <p class="item-description">ميلك شيك فانيليا مع قطع بسكويت أوريو</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="ميلك شيك أوريو" data-price="25" data-category="milkshake">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-blender"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>ميلك شيك موكا</span>
+                            <span class="item-price">24 جنية</span>
+                        </div>
+                        <p class="item-description">مزيج رائع من القهوة والشوكولاتة في ميلك شيك</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="ميلك شيك موكا" data-price="24" data-category="milkshake">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Item 6 -->
+                <div class="menu-item">
+                    <div class="item-image">
+                        <i class="fas fa-blender"></i>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">
+                            <span>ميلك شيك مانجو</span>
+                            <span class="item-price">23 جنية</span>
+                        </div>
+                        <p class="item-description">ميلك شيك مانجو استوائي منعش</p>
+                        <div class="item-meta">
+                            <span class="item-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </span>
+                            <button type="button" class="add-btn" data-product="ميلك شيك مانجو" data-price="23" data-category="milkshake">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Detail Modal -->
+        <div class="product-detail-modal" id="productDetailModal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="productName">اسم المنتج</h2>
+                    <button type="button" class="close-btn" id="closeModal" aria-label="إغلاق النافذة" title="إغلاق النافذة">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <!-- Product Image -->
+                    <div class="product-image">
+                        <i class="fas fa-mug-hot" id="productIcon"></i>
+                    </div>
+
+                    <!-- Quantity Controls -->
+                    <div class="quantity-section">
+                        <h3>الكمية</h3>
+                        <div class="quantity-controls">
+                            <button type="button" class="quantity-btn decrease" id="decreaseBtn" aria-label="إنقاص الكمية" title="إنقاص الكمية">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <span class="quantity-display" id="quantityDisplay">1</span>
+                            <button type="button" class="quantity-btn increase" id="increaseBtn" aria-label="زيادة الكمية" title="زيادة الكمية">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Sugar Options (for hot drinks only) -->
+                    <div class="sugar-section hidden" id="sugarSection">
+                        <h3>عدد ملاعق السكر</h3>
+                        <div class="sugar-options">
+                            <label class="sugar-option">
+                                <input type="radio" name="sugar" value="0" checked>
+                                <span>بدون سكر</span>
+                            </label>
+                            <label class="sugar-option">
+                                <input type="radio" name="sugar" value="0.5">
+                                <span>نصف ملعقة</span>
+                            </label>
+                            <label class="sugar-option">
+                                <input type="radio" name="sugar" value="1">
+                                <span>ملعقة واحدة</span>
+                            </label>
+                            <label class="sugar-option">
+                                <input type="radio" name="sugar" value="1.5">
+                                <span>ملعقة ونصف</span>
+                            </label>
+                            <label class="sugar-option">
+                                <input type="radio" name="sugar" value="2">
+                                <span>ملعقتان</span>
+                            </label>
+                            <label class="sugar-option">
+                                <input type="radio" name="sugar" value="2.5">
+                                <span>ملعقتان ونصف</span>
+                            </label>
+                            <label class="sugar-option">
+                                <input type="radio" name="sugar" value="3">
+                                <span>3 ملاعق</span>
+                            </label>
+                            <label class="sugar-option">
+                                <input type="radio" name="sugar" value="4">
+                                <span>4 ملاعق</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Total Price -->
+                    <div class="total-section">
+                        <div class="total-price">
+                            <span>المجموع الكلي:</span>
+                            <span class="total-amount" id="totalAmount">0 جنية</span>
+                        </div>
+                    </div>
+
+                    <!-- Purchase Button -->
+                    <div class="purchase-section">
+                        <button type="button" class="purchase-btn" id="purchaseBtn">
+                            <i class="fas fa-shopping-cart"></i>
+                            شراء الآن
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>SWY Coffee - قهوة SWY</p>
+            <p>جميع الحقوق محفوظة &copy; 2025</p>
+            <div class="social-links">
+                <a href="#" class="social-link">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-snapchat-ghost"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
