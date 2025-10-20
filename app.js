@@ -175,7 +175,7 @@ class ProductModal {
         this.showPurchaseConfirmation(orderDetails);
     }
 
-    showPurchaseConfirmation(orderDetails) {
+    async showPurchaseConfirmation(orderDetails) {
         let sugarText = '';
         if (orderDetails.sugar !== null) {
             const sugarValue = parseFloat(orderDetails.sugar);
@@ -186,13 +186,120 @@ class ProductModal {
             }
         }
 
-        // Add order to admin system
-        this.addOrderToAdmin(orderDetails);
+        // Show order details form with table number and customer info
+        const { value: formValues } = await Swal.fire({
+            title: 'تأكيد الطلب',
+            html: `
+                <div class="order-confirmation-form">
+                    <div class="order-summary mb-4">
+                        <h5 class="text-primary mb-3">
+                            <i class="fas fa-shopping-cart me-2"></i>
+                            تفاصيل الطلب
+                        </h5>
+                        <div class="order-item-details">
+                            <p><strong>المنتج:</strong> ${orderDetails.product}${sugarText}</p>
+                            <p><strong>الكمية:</strong> ${orderDetails.quantity}</p>
+                            <p><strong>السعر الإجمالي:</strong> ${orderDetails.total} جنية</p>
+                        </div>
+                    </div>
 
-        const message = `تم إضافة ${orderDetails.quantity} ${orderDetails.product}${sugarText} إلى السلة\nالمجموع: ${orderDetails.total} جنية`;
+                    <div class="customer-info">
+                        <h6 class="text-secondary mb-3">
+                            <i class="fas fa-user me-2"></i>
+                            معلومات العميل
+                        </h6>
+                        <div class="form-group mb-3">
+                            <label for="tableNumber" class="form-label">رقم الطاولة *</label>
+                            <input type="number"
+                                    id="tableNumber"
+                                    class="form-control"
+                                    placeholder="أدخل رقم الطاولة"
+                                    min="1"
+                                    max="50"
+                                    required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerName" class="form-label">اسم العميل (اختياري)</label>
+                            <input type="text"
+                                    id="customerName"
+                                    class="form-control"
+                                    placeholder="أدخل اسم العميل">
+                        </div>
+                    </div>
+                </div>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'تأكيد الطلب <i class="fas fa-check ms-2"></i>',
+            cancelButtonText: 'إلغاء',
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#dc3545',
+            width: '500px',
+            preConfirm: () => {
+                const tableNumber = document.getElementById('tableNumber').value;
+                const customerName = document.getElementById('customerName').value;
 
-        alert(message);
-        this.closeModal();
+                if (!tableNumber) {
+                    Swal.showValidationMessage('يرجى إدخال رقم الطاولة');
+                    return false;
+                }
+
+                if (tableNumber < 1 || tableNumber > 50) {
+                    Swal.showValidationMessage('رقم الطاولة يجب أن يكون بين 1 و 50');
+                    return false;
+                }
+
+                return {
+                    tableNumber: parseInt(tableNumber),
+                    customerName: customerName.trim() || null
+                };
+            }
+        });
+
+        if (formValues) {
+            // Generate customer ID
+            const customerId = this.generateCustomerId();
+
+            // Add customer info to order details
+            const completeOrderDetails = {
+                ...orderDetails,
+                tableNumber: formValues.tableNumber,
+                customerName: formValues.customerName,
+                customerId: customerId
+            };
+
+            // Add order to admin system
+            this.addOrderToAdmin(completeOrderDetails);
+
+            // Show success message
+            await Swal.fire({
+                title: 'تم تأكيد الطلب!',
+                html: `
+                    <div class="success-order-details">
+                        <div class="mb-3">
+                            <i class="fas fa-check-circle text-success fa-3x mb-3"></i>
+                        </div>
+                        <p><strong>رقم العميل:</strong> ${customerId}</p>
+                        <p><strong>رقم الطاولة:</strong> ${formValues.tableNumber}</p>
+                        ${formValues.customerName ? `<p><strong>اسم العميل:</strong> ${formValues.customerName}</p>` : ''}
+                        <p><strong>المنتج:</strong> ${orderDetails.product}${sugarText}</p>
+                        <p><strong>الكمية:</strong> ${orderDetails.quantity}</p>
+                        <p><strong>المجموع:</strong> ${orderDetails.total} جنية</p>
+                    </div>
+                `,
+                icon: 'success',
+                confirmButtonText: 'موافق',
+                confirmButtonColor: '#28a745'
+            });
+
+            this.closeModal();
+        }
+    }
+
+    generateCustomerId() {
+        // Generate a unique customer ID based on timestamp and random number
+        const timestamp = Date.now().toString().slice(-6); // Last 6 digits of timestamp
+        const random = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+        return `C${timestamp}${random}`;
     }
 
     addOrderToAdmin(orderDetails) {
@@ -259,12 +366,6 @@ class MenuManager {
     }
 
     addProductsToMenu(products) {
-        const categoryIcons = {
-            'hot-drinks': 'fas fa-mug-hot',
-            'cold-drinks': 'fas fa-glass-whiskey',
-            'ice-cream': 'fas fa-ice-cream',
-            'milkshake': 'fas fa-blender'
-        };
 
         // Group products by category
         const productsByCategory = {};
@@ -287,10 +388,14 @@ class MenuManager {
                         `<div class="item-badge ${badge.class}">${badge.text}</div>`
                     ).join('');
 
+                    // Determine image to display
+                    const imageHTML = product.image
+                        ? `<img src="${product.image}" alt="${product.name}" class="product-image">`
+                        : `<i class="fas fa-mug-hot"></i>`;
                     const productHTML = `
                         <div class="menu-item dynamic-product" data-product-id="${product.id}">
                             <div class="item-image">
-                                <i class="${categoryIcons[category]}"></i>
+                                ${imageHTML}
                                 ${badgesHTML}
                             </div>
                             <div class="item-info">

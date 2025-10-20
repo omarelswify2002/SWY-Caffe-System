@@ -1,0 +1,37 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8f9fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e9ecef;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="200" height="200" fill="url(#bg)" rx="15"/>
+  
+  <!-- Coffee cup icon -->
+  <g transform="translate(100, 100)">
+    <!-- Cup body -->
+    <path d="M-30,-20 L-30,20 Q-30,35 -15,35 L15,35 Q30,35 30,20 L30,-20 Z" 
+          fill="#8B4513" opacity="0.8"/>
+    
+    <!-- Cup handle -->
+    <path d="M30,0 Q45,0 45,15 Q45,30 30,30" 
+          fill="none" stroke="#8B4513" stroke-width="4" opacity="0.8"/>
+    
+    <!-- Coffee surface -->
+    <ellipse cx="0" cy="-18" rx="28" ry="8" fill="#3E2723" opacity="0.9"/>
+    
+    <!-- Steam -->
+    <g opacity="0.6">
+      <path d="M-15,-25 Q-12,-35 -15,-45" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round"/>
+      <path d="M0,-25 Q3,-35 0,-45" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round"/>
+      <path d="M15,-25 Q18,-35 15,-45" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round"/>
+    </g>
+  </g>
+  
+  <!-- Text -->
+  <text x="100" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#6c757d">
+    صورة افتراضية
+  </text>
+</svg>

@@ -81,7 +81,24 @@
                         <label for="productPrice">السعر (جنية)</label>
                         <input type="number" id="productPrice" name="price" placeholder="أدخل السعر" min="1" step="0.5" required>
                     </div>
-                    
+
+                    <div class="form-group">
+                        <label for="productImage">صورة المنتج (اختياري)</label>
+                        <div class="image-upload-container">
+                            <input type="file" id="productImage" name="image" accept="image/*" class="image-input">
+                            <div class="image-preview-container">
+                                <div class="image-preview" id="imagePreview">
+                                    <i class="fas fa-image"></i>
+                                    <span>اختر صورة المنتج</span>
+                                </div>
+                                <button type="button" class="remove-image-btn" id="removeImageBtn" title="إزالة الصورة">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <small class="form-text">إذا لم تختر صورة، ستظهر الصورة الافتراضية</small>
+                        </div>
+                    </div>
+
                     <button type="submit" class="add-product-btn">
                         <i class="fas fa-plus"></i> إضافة المنتج
                     </button>

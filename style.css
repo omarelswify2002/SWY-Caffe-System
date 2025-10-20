@@ -212,6 +212,18 @@ body {
     overflow: hidden;
 }
 
+.item-image .product-image {
+    width: 100%;
+    height: 140%;
+    object-fit: contain;
+}
+
+.item-image .product-image.default-image {
+    object-fit: contain;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+}
+
 .item-image::before {
     content: "";
     position: absolute;
@@ -399,6 +411,49 @@ body {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* SweetAlert2 Custom Styles */
+.order-confirmation-form {
+    text-align: right;
+    direction: rtl;
+}
+
+.order-summary {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+}
+
+.order-item-details p {
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.customer-info {
+    margin-top: 20px;
+}
+
+.form-group {
+    text-align: right;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #495057;
+}
+
+.success-order-details {
+    text-align: center;
+    direction: rtl;
+}
+
+.success-order-details p {
+    margin: 8px 0;
+    font-size: 14px;
 }
 
 /* Responsive Design */

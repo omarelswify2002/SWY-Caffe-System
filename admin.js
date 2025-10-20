@@ -59,6 +59,87 @@ class AdminPanel {
                 this.refreshData();
             }
         });
+
+        // Image upload functionality
+        this.initImageUpload();
+    }
+
+    initImageUpload() {
+        const imageInput = document.getElementById('productImage');
+        const imagePreview = document.getElementById('imagePreview');
+        const removeImageBtn = document.getElementById('removeImageBtn');
+
+        // Click on preview to open file dialog
+        imagePreview.addEventListener('click', () => {
+            imageInput.click();
+        });
+
+        // Handle file selection
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                this.handleImageUpload(file);
+            }
+        });
+
+        // Remove image button
+        removeImageBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.removeImage();
+        });
+    }
+
+    handleImageUpload(file) {
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            Swal.fire({
+                title: 'خطأ في نوع الملف',
+                text: 'يرجى اختيار ملف صورة صالح',
+                icon: 'error',
+                confirmButtonText: 'موافق'
+            });
+            return;
+        }
+
+        // Validate file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            Swal.fire({
+                title: 'حجم الملف كبير',
+                text: 'يرجى اختيار صورة أصغر من 5 ميجابايت',
+                icon: 'error',
+                confirmButtonText: 'موافق'
+            });
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            this.displayImagePreview(e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    displayImagePreview(imageSrc) {
+        const imagePreview = document.getElementById('imagePreview');
+        const removeImageBtn = document.getElementById('removeImageBtn');
+
+        imagePreview.innerHTML = `<img src="${imageSrc}" alt="Product Preview">`;
+        imagePreview.classList.add('has-image');
+        removeImageBtn.style.display = 'flex';
+    }
+
+    removeImage() {
+        const imageInput = document.getElementById('productImage');
+        const imagePreview = document.getElementById('imagePreview');
+        const removeImageBtn = document.getElementById('removeImageBtn');
+
+        imageInput.value = '';
+        imagePreview.innerHTML = `
+            <i class="fas fa-image"></i>
+            <span>اختر صورة المنتج</span>
+        `;
+        imagePreview.classList.remove('has-image');
+        removeImageBtn.style.display = 'none';
     }
     
     switchTab(tabName) {
@@ -88,41 +169,67 @@ class AdminPanel {
     addProduct() {
         const form = document.getElementById('productForm');
         const formData = new FormData(form);
-        
+        const imagePreview = document.getElementById('imagePreview');
+
+        // Get image data if uploaded
+        let imageData = null;
+        const imageElement = imagePreview.querySelector('img');
+        if (imageElement) {
+            imageData = imageElement.src;
+        }
+
         const product = {
             id: Date.now().toString(),
             category: formData.get('category'),
             name: formData.get('name'),
             description: formData.get('description'),
             price: parseFloat(formData.get('price')),
+            image: imageData, // Store the base64 image data
             createdAt: new Date().toISOString(),
             orderCount: 0
         };
-        
+
         // Add to products array
         this.products.push(product);
         this.saveProducts();
-        
-        // Clear form
+
+        // Clear form and image preview
         form.reset();
-        
+        this.removeImage();
+
         // Re-render products
         this.renderCurrentProducts();
-        
+
         // Show success message
         this.showNotification('تم إضافة المنتج بنجاح!', 'success');
-        
+
         // Update main menu if it exists
         this.updateMainMenu();
     }
     
-    deleteProduct(productId) {
-        if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
+    async deleteProduct(productId) {
+        const result = await Swal.fire({
+            title: 'حذف المنتج',
+            text: 'هل أنت متأكد من حذف هذا المنتج؟',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'نعم، احذف!',
+            cancelButtonText: 'إلغاء'
+        });
+
+        if (result.isConfirmed) {
             this.products = this.products.filter(p => p.id !== productId);
             this.saveProducts();
             this.renderCurrentProducts();
             this.updateMainMenu();
-            this.showNotification('تم حذف المنتج بنجاح!', 'success');
+
+            Swal.fire(
+                'تم الحذف!',
+                'تم حذف المنتج بنجاح.',
+                'success'
+            );
         }
     }
     
@@ -153,6 +260,18 @@ class AdminPanel {
                 `<span class="product-badge ${badge.class}">${badge.text}</span>`
             ).join('');
 
+            // Get default image based on category
+            const categoryIcons = {
+                'hot-drinks': 'fas fa-mug-hot',
+                'cold-drinks': 'fas fa-glass-whiskey',
+                'ice-cream': 'fas fa-ice-cream',
+                'milkshake': 'fas fa-blender'
+            };
+
+            const imageHTML = product.image
+                ? `<img src="${product.image}" alt="${product.name}" class="product-image">`
+                : `<div class="product-default-image"><i class="${categoryIcons[product.category]}"></i></div>`;
+
             return `
                 <div class="product-card">
                     <div class="product-card-header">
@@ -160,6 +279,9 @@ class AdminPanel {
                         <button type="button" class="delete-product-btn" onclick="adminPanel.deleteProduct('${product.id}')">
                             <i class="fas fa-trash"></i>
                         </button>
+                    </div>
+                    <div class="product-image-container">
+                        ${imageHTML}
                     </div>
                     <div class="product-badges">${badgesHTML}</div>
                     <div class="product-name">${product.name}</div>
@@ -206,7 +328,7 @@ class AdminPanel {
                             <div class="completed-count">
                                 <span>مكتمل: ${completedOrders.length}</span>
                             </div>
-                            <button type="button" class="delete-product-btn" onclick="${completedOrders.length === 0 ? `adminPanel.deleteProductOrders('${productName}')` : `alert('لا يمكن حذف الطلبات المكتملة.')`}">
+                            <button type="button" class="delete-product-btn" onclick="${completedOrders.length === 0 ? `adminPanel.deleteProductOrders('${productName}')` : `adminPanel.showCannotDeleteMessage()`}">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
@@ -217,13 +339,31 @@ class AdminPanel {
                                 <div class="order-details">
                                     <div class="order-number">${index + 1}</div>
                                     <div class="order-info">
-                                        ${order.quantity} × ${productName}
-                                        ${order.sugar !== null ? ` (${this.getSugarText(order.sugar)})` : ''}
-                                        - ${order.total} جنية
+                                        <div class="order-product-info">
+                                            ${order.quantity} × ${productName}
+                                            ${order.sugar !== null ? ` (${this.getSugarText(order.sugar)})` : ''}
+                                            - ${order.total} جنية
+                                        </div>
+                                        <div class="order-customer-info">
+                                            <span class="customer-id">
+                                                <i class="fas fa-user"></i>
+                                                ${order.customerId || 'غير محدد'}
+                                            </span>
+                                            <span class="table-number">
+                                                <i class="fas fa-table"></i>
+                                                طاولة ${order.tableNumber || 'غير محدد'}
+                                            </span>
+                                            ${order.customerName ? `
+                                                <span class="customer-name">
+                                                    <i class="fas fa-user-tag"></i>
+                                                    ${order.customerName}
+                                                </span>
+                                            ` : ''}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="order-item-actions">
-                                    <button type="button" class="complete-order-btn ${order.completed ? 'completed' : ''}" 
+                                    <button type="button" class="complete-order-btn ${order.completed ? 'completed' : ''}"
                                             onclick="adminPanel.toggleOrderStatus('${productName}', ${index})"
                                             ${order.completed ? 'disabled' : ''}>
                                         ${order.completed ? 'مكتمل' : 'إكمال'}
@@ -265,13 +405,29 @@ class AdminPanel {
         }
     }
     
-    deleteProductOrders(productName) {
-        if (confirm(`هل أنت متأكد من حذف جميع طلبات ${productName}؟`)) {
+    async deleteProductOrders(productName) {
+        const result = await Swal.fire({
+            title: 'حذف طلبات المنتج',
+            text: `هل أنت متأكد من حذف جميع طلبات ${productName}؟`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'نعم، احذف!',
+            cancelButtonText: 'إلغاء'
+        });
+
+        if (result.isConfirmed) {
             delete this.orders[productName];
             this.saveOrders();
             this.renderOrders();
             this.updateOrdersSummary();
-            this.showNotification('تم حذف الطلبات بنجاح!', 'success');
+
+            Swal.fire(
+                'تم الحذف!',
+                'تم حذف الطلبات بنجاح.',
+                'success'
+            );
         }
     }
     
@@ -463,13 +619,29 @@ class AdminPanel {
         this.updateMainMenu();
     }
 
-    deleteOffer(offerId) {
-        if (confirm('هل أنت متأكد من حذف هذا العرض؟')) {
+    async deleteOffer(offerId) {
+        const result = await Swal.fire({
+            title: 'حذف العرض',
+            text: 'هل أنت متأكد من حذف هذا العرض؟',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'نعم، احذف!',
+            cancelButtonText: 'إلغاء'
+        });
+
+        if (result.isConfirmed) {
             this.offers = this.offers.filter(o => o.id !== offerId);
             this.saveOffers();
             this.renderOffers();
             this.updateMainMenu();
-            this.showNotification('تم حذف العرض بنجاح!', 'success');
+
+            Swal.fire(
+                'تم الحذف!',
+                'تم حذف العرض بنجاح.',
+                'success'
+            );
         }
     }
 
@@ -540,21 +712,32 @@ class AdminPanel {
     }
     
     showNotification(message, type = 'info') {
-        // Create notification element
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.innerHTML = `
-            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i>
-            <span>${message}</span>
-        `;
-        
-        // Add to page
-        document.body.appendChild(notification);
-        
-        // Remove after 3 seconds
-        setTimeout(() => {
-            notification.remove();
-        }, 3000);
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        Toast.fire({
+            icon: type === 'success' ? 'success' : 'info',
+            title: message
+        });
+    }
+
+    showCannotDeleteMessage() {
+        Swal.fire({
+            title: 'لا يمكن الحذف',
+            text: 'لا يمكن حذف الطلبات المكتملة.',
+            icon: 'warning',
+            confirmButtonText: 'موافق',
+            confirmButtonColor: '#3085d6'
+        });
     }
     
     // Data persistence methods
