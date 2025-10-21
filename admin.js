@@ -12,6 +12,7 @@ class AdminPanel {
         this.renderOrders();
         this.renderOffers();
         this.updateOrdersSummary();
+        this.updateTrashCounter();
         this.startAutoRefresh();
     }
     
@@ -209,27 +210,109 @@ class AdminPanel {
     
     async deleteProduct(productId) {
         const result = await Swal.fire({
-            title: 'حذف المنتج',
-            text: 'هل أنت متأكد من حذف هذا المنتج؟',
+            title: 'نقل إلى سلة المحذوفات',
+            text: 'هل أنت متأكد من نقل هذا المنتج إلى سلة المحذوفات؟',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
-            confirmButtonText: 'نعم، احذف!',
+            confirmButtonText: 'نعم، انقل إلى السلة!',
             cancelButtonText: 'إلغاء'
         });
 
         if (result.isConfirmed) {
-            this.products = this.products.filter(p => p.id !== productId);
-            this.saveProducts();
-            this.renderCurrentProducts();
-            this.updateMainMenu();
+            // Find the product to move to trash
+            const productIndex = this.products.findIndex(p => p.id === productId);
+            if (productIndex !== -1) {
+                const product = this.products[productIndex];
 
-            Swal.fire(
-                'تم الحذف!',
-                'تم حذف المنتج بنجاح.',
-                'success'
-            );
+                // Add deletion timestamp
+                product.deletedAt = new Date().toISOString();
+
+                // Move to trash
+                this.moveToTrash(product);
+
+                // Remove from active products
+                this.products.splice(productIndex, 1);
+                this.saveProducts();
+                this.renderCurrentProducts();
+                this.updateMainMenu();
+
+                Swal.fire(
+                    'تم النقل!',
+                    'تم نقل المنتج إلى سلة المحذوفات بنجاح.',
+                    'success'
+                );
+            }
+        }
+    }
+
+    moveToTrash(product) {
+        const trashedProducts = this.loadTrashedProducts();
+        trashedProducts.push(product);
+        this.saveTrashedProducts(trashedProducts);
+    }
+
+    loadTrashedProducts() {
+        const saved = localStorage.getItem('swy_trashed_products');
+        return saved ? JSON.parse(saved) : [];
+    }
+
+    saveTrashedProducts(trashedProducts) {
+        localStorage.setItem('swy_trashed_products', JSON.stringify(trashedProducts));
+        this.updateTrashCounter();
+    }
+
+    moveOrdersToTrash(productName, orders) {
+        const trashedOrders = this.loadTrashedOrders();
+
+        // Create a trashed order entry
+        const trashedOrderEntry = {
+            id: Date.now().toString() + '_' + Math.random().toString(36).substring(2, 11),
+            productName: productName,
+            orders: orders.map(order => ({
+                ...order,
+                deletedAt: new Date().toISOString()
+            })),
+            deletedAt: new Date().toISOString(),
+            totalOrders: orders.length,
+            totalValue: orders.reduce((sum, order) => sum + order.total, 0)
+        };
+
+        trashedOrders.push(trashedOrderEntry);
+        this.saveTrashedOrders(trashedOrders);
+    }
+
+    loadTrashedOrders() {
+        const saved = localStorage.getItem('swy_trashed_orders');
+        return saved ? JSON.parse(saved) : [];
+    }
+
+    saveTrashedOrders(trashedOrders) {
+        localStorage.setItem('swy_trashed_orders', JSON.stringify(trashedOrders));
+        this.updateTrashCounter();
+    }
+
+    updateTrashCounter() {
+        const trashLink = document.querySelector('.trash-link');
+        if (trashLink) {
+            const trashedProducts = this.loadTrashedProducts();
+            const trashedOrders = this.loadTrashedOrders();
+            const count = trashedProducts.length + trashedOrders.length;
+
+            // Remove existing counter
+            const existingCounter = trashLink.querySelector('.trash-counter');
+            if (existingCounter) {
+                existingCounter.remove();
+            }
+
+            // Add counter if there are items in trash
+            if (count > 0) {
+                const counter = document.createElement('span');
+                counter.className = 'trash-counter';
+                counter.textContent = count;
+                trashLink.appendChild(counter);
+            }
         }
     }
     
@@ -406,26 +489,50 @@ class AdminPanel {
     }
     
     async deleteProductOrders(productName) {
+        if (!this.orders[productName]) return;
+
+        const incompleteOrders = this.orders[productName].orders.filter(order => !order.completed);
+        const completedOrders = this.orders[productName].orders.filter(order => order.completed);
+
+        if (incompleteOrders.length === 0) {
+            Swal.fire({
+                title: 'لا توجد طلبات غير مكتملة',
+                text: 'جميع طلبات هذا المنتج مكتملة.',
+                icon: 'info',
+                confirmButtonText: 'موافق'
+            });
+            return;
+        }
+
         const result = await Swal.fire({
-            title: 'حذف طلبات المنتج',
-            text: `هل أنت متأكد من حذف جميع طلبات ${productName}؟`,
+            title: 'نقل الطلبات غير المكتملة إلى سلة المحذوفات',
+            text: `سيتم نقل ${incompleteOrders.length} طلب غير مكتمل إلى سلة المحذوفات. الطلبات المكتملة (${completedOrders.length}) ستبقى كما هي.`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
-            confirmButtonText: 'نعم، احذف!',
+            confirmButtonText: 'نعم، انقل إلى السلة!',
             cancelButtonText: 'إلغاء'
         });
 
         if (result.isConfirmed) {
-            delete this.orders[productName];
+            // Move incomplete orders to trash
+            this.moveOrdersToTrash(productName, incompleteOrders);
+
+            // Keep only completed orders
+            if (completedOrders.length > 0) {
+                this.orders[productName].orders = completedOrders;
+            } else {
+                delete this.orders[productName];
+            }
+
             this.saveOrders();
             this.renderOrders();
             this.updateOrdersSummary();
 
             Swal.fire(
-                'تم الحذف!',
-                'تم حذف الطلبات بنجاح.',
+                'تم النقل!',
+                `تم نقل ${incompleteOrders.length} طلب غير مكتمل إلى سلة المحذوفات.`,
                 'success'
             );
         }
